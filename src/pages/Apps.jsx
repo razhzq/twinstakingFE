@@ -16,7 +16,7 @@ import { Modal, Label, TextInput, Checkbox, Button } from 'flowbite-react';
 
 function Home() {
 
-  const { show, setShow, balance , twin, twinStaking, user} = useContext(ContractContext);
+  const { show, setShow, balance , flappy, user} = useContext(ContractContext);
 
   const [stakeAmount, setStakeAmount] = useState(0);
 
@@ -27,17 +27,9 @@ function Home() {
 
 
 
-  const stakeTwin = async (amount) => {
-    await twin.methods.approve(twinStaking._address, amount).send({ from: user}).on('transactionHash', (hash) => {
-       twinStaking.methods.stakeToken(amount).send({ from: user})
-        .on('transactionHash', (hash) => {
-           console.log(hash);
-           setShow(false);
-           
-        });
-    })
-    
-  };
+  // const mintNFT = async () =>  {
+  //      await flappy.methods.mint()
+  // }
   
   return (
  
@@ -106,7 +98,7 @@ function Home() {
       </main>
 
       {/*  Site footer */}
-      <Footer />
+      {/* <Footer /> */}
           
     
       

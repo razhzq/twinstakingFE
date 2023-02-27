@@ -70,7 +70,7 @@ function Header() {
           <div className="shrink-0 mr-4">
             <div className="flex items-center">
               <Logo />
-              <span className="ml-1 text-2xl mt-1 font-bold">Twin Protocol</span>
+              <span className="ml-1 text-2xl mt-1 font-bold text-slate-300">Flappy Seals</span>
             </div>
           </div>
 
@@ -79,14 +79,14 @@ function Header() {
 
             {/* Desktop menu links */}
             <ul className="flex space-x-8 grow justify-end flex-wrap items-center">
-              {NAV_ITEMS.map((item, idx) => ((
+              {/* {NAV_ITEMS.map((item, idx) => ((
                 <li className="flex items-center" key={idx}>
                   <img src={item.icon} alt="nav-item" />
                   <Link to={item.link} className={`${isMatched(item.link) && 'text-[#9c9c9c]'} hover:text-gray-500 px-3 py-2 flex items-center transition duration-150 ease-in-out`}>
                     {item.title}
                   </Link>
                 </li>
-              )))}
+              )))} */}
             </ul>
 
             <button className="btn-twin w-full text-white text-center font-semibold p-2 px-4 mb-4 ml-6 sm:w-auto sm:mb-0 whitespace-normal"

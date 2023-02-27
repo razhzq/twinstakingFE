@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Link } from "react-router-dom";
+import Web3 from 'web3';
 
 import {ContractContext} from '../../context/ContractContext';
 
@@ -10,91 +11,43 @@ import {ContractContext} from '../../context/ContractContext';
 
 function HeroApp() {
 
-  const { user, twinStaking, twin, show, setShow, balance, setBalance, totalStaked} = useContext(ContractContext);
+  const { user, flappy, show, setShow, balance, setBalance, totalStaked} = useContext(ContractContext);
 
-  const [poolBalance, setPoolBalance] = useState(0);
-  const [poolStatus, setPoolStatus] = useState("Close");
-  const [stakedAmount, setUserStakeAmount] = useState(0);
-  const [reward, setReward] = useState(0);
-  const [maturity, setMaturity] = useState(0);
-  const [total, setTotal] = useState(0);
-  
-  
+  const [counter, setCounter] = useState(0);
 
-  const getPoolStatus = async () => {
-    const status = await twinStaking.methods.getPoolStatus().call();
-    if(status == 0) {
-       setPoolStatus("Close");
-    } else if (status == 1 ) {
-      setPoolStatus("Open");
+
+  const increment = (e) => {
+    e.preventDefault();
+    if (counter < 3) {
+      setCounter(count => count + 1)
+    } else {
+      alert('Max NFT allowed to mint reached!')
     }
+   
+  }
+ 
+  const decrement = (e) => {
+    e.preventDefault();
+    if(counter > 0) {
+      setCounter(count => count - 1);
+    }
+    
   }
 
-  const getUserStakedTWIN = async () => {
-    const amount = await twinStaking.methods.getUserStakeAmount(user).call();
-    const divBal = amount / (1 * 10**18);
-    setUserStakeAmount(divBal);
-  }
-
-  const getRewards = async () => {
-    const reward = await twinStaking.methods.checkRewardCycle(user).call();
-    const divBal = reward / (1 * 10**18);
-    setReward(divBal);
-  }
-
-  const twinBalance = async () => {
-    const bal = await twin.methods.balanceOf(user).call();
-    const divBal = bal / (1 * 10**18);
-    setBalance(divBal);
-  }
-
-  const unstake = async () => {
-    await twinStaking.methods.unstakeToken().send({ from: user }).on('transactionHash', (hash) => {
+  const mintNFT = async (amount, nftFees) => {
+    await flappy.methods.mint(amount).send({ from: user, value: Web3.utils.toWei(nftFees, "ether")}).on('transactionHash', (hash) => {
       console.log(hash);
     })
   }
-
-  const claim = async () => {
-    await twinStaking.methods.claimRewards().send({ from: user }).on('transactionHash', (hash) => {
-      console.log(hash);
-    })
-  }
-
-  const getPoolBalance = async () => {
-    const bal = await twin.methods.balanceOf("0xf743541bBd7EB3366C30323bcF2B39ff005DC745").call();
-    const divBal = bal / (1000000000000000000);
-    setPoolBalance(Math.round(divBal));
-  }
-
-  const getMaturity = async () => {
-    const bal = await twinStaking.methods.getMaturityPeriod().call();
-    const days = bal / (24 * 60 * 60);
-    setMaturity(days);
-
-  }
-
-  const getTotal = async () => {
-    const bal = await twinStaking.methods.getTotalStakedinPool().call();
-    const divBal = bal / (1000000000000000000);
-    setTotal(Math.round(divBal));
-    console.log("total: ", divBal)
-  }
-
-
   
 
 
   useEffect(()=> {
-    getUserStakedTWIN();
-    getRewards();
-    twinBalance();
-    getPoolBalance();
+    
   }, [user])
 
   useEffect(() => {
-    getTotal();
-    getMaturity();
-    getPoolStatus();
+    
   })
 
 
@@ -107,34 +60,42 @@ function HeroApp() {
           {/* Section header */}
           <div className="max-w-2xl pb-0 md:pb-16">
             <p className="mb-8 text-5xl font-black" style={{ fontFamily: 'system-ui' }} data-aos="fade-up">
-              <span className="text-stroke">TWIN </span>
-              TOKEN
-              <span className="text-stroke"> STAKING</span>
+              {/* <span className="text-stroke">TWIN </span>
+              NFT
+              <span className="text-stroke"> MINT</span> */}
             </p>
             
-            <div className="w-full px-8 py-8 text-gray-100 border rounded-3xl bg-[#253051]">
+            <div className="w-full px-8 py-8 text-gray-900 border rounded-3xl bg-gray-100">
               <div className="flex justify-between text-xs">
-                <span>PRICE PER DISACART</span>
+                <span>PRICE PER TWIN</span>
                 <span>TOTAL</span>
               </div>
               <div className="flex justify-between text-xl font-bold">
-                <span>-BNB</span>
-                <span>-BNB</span>
+                <span>0.015 ETH</span>
+                <span>{counter * 0.015}{" "}ETH</span>
               </div>
               <hr className='w-full h-1 bg-white'/>
               <div>
                 <p className='my-8 text-center text-xl font-bold'>MINT YOUR</p>
-                <h1 className='mb-8 text-center text-3xl font-bold text-[#89a7e0]'>Dosacraf</h1>
+                <h1 className='mb-8 text-center text-3xl font-bold text-gray-900'>Flappy Seals</h1>
                 <div className="flex items-center mb-8">
-                  <div className="flex justify-center items-center w-16 h-10 bg-[#89a7e0] text-white font-bold rounded-l-3xl cursor-pointer">-</div>
-                  <div className="flex justify-center items-center w-full h-10 bg-white text-black font-extrabold text-xl">1</div>
-                  <div className="flex justify-center items-center w-16 h-10 bg-[#89a7e0] text-white font-bold rounded-r-3xl cursor-pointer">+</div>
+                  <div className="flex div-plus justify-center items-center w-16 h-10 bg-[#89a7e0] text-white font-bold rounded-l-3xl cursor-pointer"
+                    onClick={(e) => decrement(e)}
+                  >-</div>
+                  <div className="flex justify-center items-center w-full h-10 bg-white text-black font-extrabold text-xl">{counter}</div>
+                  <div className="flex div-plus justify-center items-center w-16 h-10 bg-[#89a7e0] text-white font-bold rounded-r-3xl cursor-pointer"
+                    onClick={(e) => increment(e)}
+                  >+</div>
                 </div>
               <hr className='w-full h-1 bg-white'/>
               <div className="pt-8">
                 <p className='text-center text-md font-bold'>TOTAL MINTED -</p>
-                <div className="flex justify-center items-center w-full h-10 my-8 bg-[#89a7e0] text-gray-300 rounded-3xl"> MINT </div>
-                <p className='text-center text-md font-bold'>FREEBIES 0</p>
+                <div className="flex div-plus justify-center items-center w-full h-10 my-8 font-extrabold text-white rounded-3xl cursor-pointer"
+                  onClick={() => {
+                    mintNFT(counter, String(counter * 0.015));
+                  }}
+                > MINT </div>
+                {/* <p className='text-center text-md font-bold'>FREEBIES 0</p> */}
               </div>
               </div>
             </div>

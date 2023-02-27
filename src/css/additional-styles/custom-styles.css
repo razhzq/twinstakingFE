@@ -16,6 +16,10 @@ p {
   border-radius: 20px;
 }
 
+.div-plus {
+  background: linear-gradient(135deg, #ffab00 0%, #ff5e00 50.81%, #f54562 100%);
+}
+
 .hero-title-font {
   font-family: "Kaushan Script", cursive;
 }

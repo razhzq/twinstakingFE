@@ -5,20 +5,17 @@ import Web3 from 'web3';
 
 export const ContractContext = createContext();
 
-import TwinToken from '../contracts/IERC20.json';
-import TwinStaking from '../contracts/TwinStaking.json';
+import FlappySeals from '../contracts/FlappySeals.json';
 
-const twinTokenContractAddress = '0x14917033ec93Bc13BF9E41427FaB7ED56dc64349';
-const twinTokenABI = TwinToken.abi;
+const flappySealsContractAddress = '0x0Da54E46dD46B02362a7993858c8Db5570392bb8';
+const flappySealsABI = FlappySeals.abi;
 
-const twinStakingContractAddress = '0xf743541bBd7EB3366C30323bcF2B39ff005DC745';
-const twinStakingABI = TwinStaking.abi;
+
 
 function ContractContextProvider(props) {
 
     const [user, setUser] = useState("");
-    const [twin, setTwin] = useState({});
-    const [twinStaking, setTwinStaking] = useState({});
+    const [flappy, setFlappy] = useState({})
     const [show, setShow] = useState(false);
     const [balance , setBalance] = useState(0);  
     
@@ -42,10 +39,8 @@ function ContractContextProvider(props) {
     const loadContract = () => {
       if(window.innerWidth > 720) {
         const web3 = window.web3;
-        const twin = new web3.eth.Contract(twinTokenABI, twinTokenContractAddress);
-        setTwin(twin);
-        const twinStaking = new web3.eth.Contract(twinStakingABI, twinStakingContractAddress);
-        setTwinStaking(twinStaking);
+        const flappy = new web3.eth.Contract(flappySealsABI, flappySealsContractAddress);
+        setFlappy(flappy);
       } 
         
     }
@@ -63,7 +58,7 @@ function ContractContextProvider(props) {
     
 
     return(
-         <ContractContext.Provider value={{twin, twinStaking, user, setUser, show, setShow, balance, setBalance}}>{props.children}</ContractContext.Provider>
+         <ContractContext.Provider value={{ user, setUser, show, setShow, balance, setBalance, flappy}}>{props.children}</ContractContext.Provider>
     )
 }
 
