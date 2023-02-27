@@ -14,6 +14,7 @@ function HeroApp() {
   const { user, flappy, show, setShow, balance, setBalance, totalStaked} = useContext(ContractContext);
 
   const [counter, setCounter] = useState(0);
+  const [supply, setSupply] = useState(0);
 
 
   const increment = (e) => {
@@ -39,15 +40,20 @@ function HeroApp() {
       console.log(hash);
     })
   }
+
+  const getSupply = async () => {
+     const supp = await flappy.methods.totalSupply().call();
+     setSupply(supp);
+  }
   
 
 
   useEffect(()=> {
-    
+   
   }, [user])
 
   useEffect(() => {
-    
+    getSupply();
   })
 
 
@@ -89,7 +95,7 @@ function HeroApp() {
                 </div>
               <hr className='w-full h-1 bg-white'/>
               <div className="pt-8">
-                <p className='text-center text-md font-bold'>TOTAL MINTED -</p>
+                <p className='text-center text-md font-bold'>TOTAL MINTED - {supply}</p>
                 <div className="flex div-plus justify-center items-center w-full h-10 my-8 font-extrabold text-white rounded-3xl cursor-pointer"
                   onClick={() => {
                     mintNFT(counter, String(counter * 0.015));
