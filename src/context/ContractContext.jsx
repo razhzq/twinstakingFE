@@ -5,9 +5,9 @@ import Web3 from 'web3';
 
 export const ContractContext = createContext();
 
-import FlappySeals from '../contracts/FlappySeals.json';
+import FlappySeals from '../contracts/FlappySealsWhiteList.json';
 
-const flappySealsContractAddress = '0xdFdF9135F2D61705a820B8CE2d26af71471d5BeD';
+const flappySealsContractAddress = '0x1e9fFF50e5b92b5e6cCb5Bbf02c972ae7573A02F';
 const flappySealsABI = FlappySeals.abi;
 
 

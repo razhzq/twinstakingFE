@@ -4,6 +4,9 @@ import Web3 from 'web3';
 
 import {ContractContext} from '../../context/ContractContext';
 
+import {MerkleTree} from "merkletreejs"
+import { keccak256 } from '@ethersproject/keccak256';
+import {Buffer} from 'buffer';
 
 
 
@@ -41,9 +44,35 @@ function HeroApp() {
     })
   }
 
+  const mintWhite = async (amount, nftFees, merkleProof) => {
+    await flappy.methods.mintWhitelist(amount, merkleProof).send({ from: user, value: Web3.utils.toWei(nftFees, "ether")}).on('transactionHash', (hash) => {
+      console.log(hash);
+    })
+  }
+
   const getSupply = async () => {
      const supp = await flappy.methods.totalSupply().call();
      setSupply(supp);
+  }
+
+  const padBuffer = (addr) => {
+    return Buffer.from(addr.substr(2).padStart(32 * 2, 0), "hex");
+  };
+
+  const generateProof = (user) => {
+    const leaves = whitelisted.map((address) => padBuffer(address));
+    const tree = new MerkleTree(leaves, keccak256, { sort: true });
+
+    const merkleRoot = tree.getHexRoot();
+
+// 6. Calculating merkleProof to check if an address is whitelisted
+     const merkleProof = tree.getHexProof(padBuffer(user));
+
+     if(!merkleProof) {
+        alert("You are not whitelisted!")
+     } else {
+      return merkleProof;
+     }
   }
   
 
@@ -101,6 +130,11 @@ function HeroApp() {
                     mintNFT(counter, String(counter * 0.015));
                   }}
                 > MINT </div>
+                <div className="flex div-plus justify-center items-center w-full h-10 my-8 font-extrabold text-white rounded-3xl cursor-pointer"
+                  onClick={() => {
+                    mintWhite(counter, String(counter * 0), generateProof(user));
+                  }}
+                > WHITELIST MINT </div>
                 {/* <p className='text-center text-md font-bold'>FREEBIES 0</p> */}
               </div>
               </div>
@@ -150,3 +184,9 @@ const STAKING_LIST = [
   //   value: '0 days'
   // }
 ]
+
+
+const whitelisted = [
+  "0x6E7aD7BC0Bf749c87F59E8995c158cDa08b7E657",
+  "0x0E10c9786D75dE07F475B15A1014b0513CdACf12",
+];
