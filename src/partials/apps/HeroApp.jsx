@@ -102,7 +102,7 @@ function HeroApp() {
             
             <div className="w-full px-8 py-8 text-gray-900 border rounded-3xl bg-gray-100">
               <div className="flex justify-between text-xs">
-                <span>PRICE PER TWIN</span>
+                <span>PRICE PER NFT</span>
                 <span>TOTAL</span>
               </div>
               <div className="flex justify-between text-xl font-bold">
