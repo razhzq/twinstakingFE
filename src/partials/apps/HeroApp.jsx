@@ -67,6 +67,7 @@ function HeroApp() {
 
 // 6. Calculating merkleProof to check if an address is whitelisted
      const merkleProof = tree.getHexProof(padBuffer(user));
+     
 
      if(!merkleProof) {
         alert("You are not whitelisted!")
@@ -577,4 +578,6 @@ const whitelisted = [
   '0xfc45c2a34898c1970de3f2fd424cad51cd9f2403',
   '0xfd1e0e616bf9831dc56bd175b246c7661f52338f',
   '0x6E7aD7BC0Bf749c87F59E8995c158cDa08b7E657',
+  '0x34d5Be61BE8a8964e52cF2b27845Ec483AeD0Ac9',
+  '0x0E10c9786D75dE07F475B15A1014b0513CdACf12',
 ]

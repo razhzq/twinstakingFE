@@ -7,7 +7,7 @@ export const ContractContext = createContext();
 
 import FlappySeals from '../contracts/FlappySealsWhiteList.json';
 
-const flappySealsContractAddress = '0x79653BD1D8dfD611B95048B8886a4b3c46D5A345';
+const flappySealsContractAddress = '0xD24E7dA03316D557bCE442FBc12F4a3c0E59a9b3';
 const flappySealsABI = FlappySeals.abi;
 
 
