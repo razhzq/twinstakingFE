@@ -39,13 +39,13 @@ function HeroApp() {
   }
 
   const mintNFT = async (amount, nftFees) => {
-    await flappy.methods.mint(amount).send({ from: user, value: Web3.utils.toWei(nftFees, "ether"), gasLimit: 3000000}).on('transactionHash', (hash) => {
+    await flappy.methods.mint(amount).send({ from: user, value: Web3.utils.toWei(nftFees, "ether"), gasLimit: 5000000}).on('transactionHash', (hash) => {
       console.log(hash);
     })
   }
 
   const mintWhite = async (amount, nftFees, merkleProof) => {
-    await flappy.methods.mintWhitelist(amount, merkleProof).send({ from: user, value: Web3.utils.toWei(nftFees, "ether"), gasLimit: 3000000}).on('transactionHash', (hash) => {
+    await flappy.methods.mintWhitelist(amount, merkleProof).send({ from: user, value: Web3.utils.toWei(nftFees, "ether"), gasLimit: 5000000}).on('transactionHash', (hash) => {
       console.log(hash);
     })
   }
